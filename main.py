@@ -8,14 +8,18 @@ No network, no dependencies, Python 3.13.
 
 import os
 import sys
+from pathlib import Path
 
 WORD = "PETRICHOR"
 
 
+def resolve_output_path() -> Path:
+    return Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")) / "entry.txt"
+
+
 def main() -> int:
-    output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
-    os.makedirs(output_dir, exist_ok=True)
-    path = os.path.join(output_dir, "entry.txt")
+    path = resolve_output_path()
+    os.makedirs(path.parent, exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(WORD + "\n")
     return 0
